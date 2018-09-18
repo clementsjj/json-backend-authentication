@@ -7,6 +7,10 @@ router.get('/', function(req, res, next) {
   res.send('Hey JJ');
 });
 
+router.get('/signup', function(req, res, next) {
+  res.send('Use POST');
+});
+
 router.post('/signup', function(req, res, next) {
   const signUpInfo = req.body;
   userController

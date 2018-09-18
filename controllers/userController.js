@@ -10,17 +10,18 @@ module.exports = {
           console.log(user);
 
           if (user) {
-            let errors = {};
-            errors.message = 'Email Already Exists';
+            let error = {};
+            error.message = 'Email Already Exists';
             error.status = 400;
-            reject(errors);
+            reject(error);
+            console.log('User Alread Exists');
           } else {
             const newUser = new User({
               username: params.username,
               email: params.email,
               password: params.password
             });
-
+            console.log('User Created');
             bcrypt.genSalt(10, (err, salt) => {
               if (err) {
                 reject(err);
