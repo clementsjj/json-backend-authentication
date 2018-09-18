@@ -7,6 +7,10 @@ router.get('/', function(req, res, next) {
   res.send('Hey JJ');
 });
 
+router.post('/', function(req, res, next) {
+  res.send('Go to /users/signup');
+});
+
 router.get('/signup', function(req, res, next) {
   res.send('Use POST');
 });
@@ -21,7 +25,7 @@ router.post('/signup', function(req, res, next) {
       });
     })
     .catch(err => {
-      const status = err.status;
+      const statusCode = err.status;
       const message = err.message;
       res.status(statusCode).json({
         message: message
