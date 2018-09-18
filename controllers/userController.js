@@ -9,46 +9,34 @@ module.exports = {
         .then(user => {
           console.log(user);
 
-          if (user !== null) {
-            //we do have that user
-            const userUsername = user.username;
+          if (user) {
+            let errors = {};
+            errors.message = 'Email Already Exists';
+            error.status = 400;
+            reject(errors);
+          } else {
+            const newUser = new User({
+              username: params.username,
+              email: params.email,
+              password: params.password
+            });
 
-            User.findOne({ username: userUsername })
-              .then(user => {
-                if (user) {
-                  let errors = {};
-                  errors.message = 'Email already exists';
-                  errors.status = 400;
-                  return reject(errors);
+            bcrypt.genSalt(10, (err, salt) => {
+              if (err) {
+                reject(err);
+              }
+              bcrypt.hash(newUser.password, salt, (err, hashedPassword) => {
+                if (err) {
+                  reject(err);
                 } else {
-                  const newUser = new User({
-                    username: params.username,
-                    email: params.email,
-                    password: params.password
-                  });
-
-                  bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(
-                      newUser.password,
-                      salt,
-                      (err, hashedPassword) => {
-                        if (err) {
-                          reject(err);
-                        } else {
-                          newUser.password = hashedPassword;
-                          newUser
-                            .save()
-                            .then(user => resolve(user))
-                            .catch(err => reject(err));
-                        }
-                      }
-                    );
-                  });
+                  newUser.password = hashedPassword;
+                  newUser
+                    .save()
+                    .then(user => resolve(user))
+                    .catch(err => reject(err));
                 }
-              })
-              .catch(err => {
-                console.log(err);
               });
+            });
           }
         })
         .catch(err => {

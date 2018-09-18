@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 require('dotenv').config();
+
 var mongoose = require('mongoose');
 
 mongoose
